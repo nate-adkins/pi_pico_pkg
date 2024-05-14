@@ -1,13 +1,22 @@
 import serial
+import time
 
+# Define the serial port and baud rate
+serial_port = '/dev/ttyACM0'  # Replace with the correct serial port of your Raspberry Pi Pico
+baud_rate = 9600
 
-def main():
-    s = serial.Serial(port="/dev/ttyACM1", parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=1)
-    s.flush()
+# Open the serial port
+ser = serial.Serial(serial_port, baud_rate, timeout=1)
 
-    s.write("data\r".encode())
-    mes = s.read_until().strip()
-    print(mes.decode())
+# Define the string to send
+string_to_send = "Hello, Raspberry Pi Pico!"
 
-if __name__ == "__main__":
-    main()
+try:
+    # Send the string
+    ser.write(string_to_send.encode('utf-8'))
+    print(f"Sent: {string_to_send}")
+except Exception as e:
+    print(f"Error: {e}")
+finally:
+    # Close the serial port
+    ser.close()
